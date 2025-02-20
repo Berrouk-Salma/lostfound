@@ -1,9 +1,10 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -28,9 +29,16 @@ class PostController extends Controller
             'contact_email' => 'required|email',
             'contact_phone' => 'required',
             'category' => 'required',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        Post::create($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('photo')) {
+            $data['photo'] = $request->file('photo')->store('photos', 'public');
+        }
+
+        Post::create($data);
 
         return redirect()->route('posts.index')->with('success', 'Post created successfully.');
     }
@@ -55,9 +63,16 @@ class PostController extends Controller
             'contact_email' => 'required|email',
             'contact_phone' => 'required',
             'category' => 'required',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $post->update($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('photo')) {
+            $data['photo'] = $request->file('photo')->store('photos', 'public');
+        }
+
+        $post->update($data);
 
         return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
     }

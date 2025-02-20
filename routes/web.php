@@ -5,8 +5,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('posts.index');
+// });
+
+Route::get('/', [PostController::class, 'index']);
+
+Route::get('/salma', function () {
+    return view('posts.salma');
 });
 
 Route::get('/dashboard', function () {
